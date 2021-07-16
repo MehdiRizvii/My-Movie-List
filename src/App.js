@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
+import Movie from 'movie';
+
+
 function App() {
   const [movies, setMovie] = useState([]);
   const [search, setSearch] = useState('');
@@ -35,15 +38,11 @@ function App() {
       </div>
         {filter.map(movie => {
             return (
-             /*   <Crypto
+                <Movie
                     key={movie.id}
-                    name={movie.name}
-                    symbol={movie.symbol}
-                    image={movie.image}
-                    volume={movie.market_cap}
-                    price={movie.current_price}
-                    priceChange={movie.price_change_percentage_24h}
-                /> */
+                    name={movie.original_title}
+                    poster={movie.logo_path}
+                />
             );
         })}
     </div>

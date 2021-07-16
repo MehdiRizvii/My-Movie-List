@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 function App() {
-  const [movie, setMovie] = useState([]);
+  const [movies, setMovie] = useState([]);
   const [search, setSearch] = useState('');
 
 
@@ -18,7 +18,8 @@ function App() {
   const handleChange = e => {
     setSearch(e.target.value);
   };
-  const filter = movie.filter(movie =>
+
+  const filter = movies.filter(movie =>
       movie.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -35,13 +36,13 @@ function App() {
         {filter.map(movie => {
             return (
              /*   <Crypto
-                    key={crypto.id}
-                    name={crypto.name}
-                    symbol={crypto.symbol}
-                    image={crypto.image}
-                    volume={crypto.market_cap}
-                    price={crypto.current_price}
-                    priceChange={crypto.price_change_percentage_24h}
+                    key={movie.id}
+                    name={movie.name}
+                    symbol={movie.symbol}
+                    image={movie.image}
+                    volume={movie.market_cap}
+                    price={movie.current_price}
+                    priceChange={movie.price_change_percentage_24h}
                 /> */
             );
         })}

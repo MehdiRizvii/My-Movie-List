@@ -2,6 +2,10 @@
 import React, {useState, useEffect} from "react";
 import Movie from './Movie';
 import "./App.css";
+import "./Components/Login"
+import "./Components/ProfilePage"
+import Login from "./Components/Login";
+import ProfilePage from "./Components/ProfilePage";
 
 const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page1";
 const POSTER = "https://image.tmdb.org/t/p/w1280";
@@ -26,13 +30,19 @@ function App() {
 
         <div>
             <div className="Banner">
-            <div className="headline"><h1>Search For Movies</h1></div>
+                <div className="headline"><h1>Search For Movies</h1>    </div>
+
+
+
+
+
             <form>
                 <input type="text" placeholder="Search" className="movieSearch"/>
 
             </form>
 
             </div>
+            <div className="Login"> <Login/> <div className="Profile"> <ProfilePage/> </div> </div>
 
 
 

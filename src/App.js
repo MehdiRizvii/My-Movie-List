@@ -6,13 +6,28 @@ import "./Components/Login"
 import "./Components/ProfilePage"
 import Login from "./Components/Login";
 import ProfilePage from "./Components/ProfilePage";
+import Logout from "./Components/Logout";
+import {useAuth0} from '@auth0/auth0-react';
+import ProfilePageButton from "./Components/ProfilePageButton";
+import {BrowserRouter as Router} from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import MyMovieList from "./Components/MyMovieList";
+import "./Components/Search";
+import Search from "./Components/Search";
+
 
 const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page1";
 const POSTER = "https://image.tmdb.org/t/p/w1280";
+const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=";
+
 
 function App() {
 
+
     const [movies, setMovies] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+
+
 
     useEffect(() => {
      fetch(FEATURED_API)
@@ -25,25 +40,97 @@ function App() {
 
     }, []);
 
+    const handleonSubmit = (e) => {
+        e.preventDefault();
+
+        if(searchValue) {
+
+            fetch(SEARCH_API + searchValue)
+                .then(res => res.json())
+
+                .then((data) => {
+                    setMovies(data.results);
+                });
+            setSearchValue('');
+        }
+        if(searchValue ===('')){
+            fetch(FEATURED_API)
+                .then(res => res.json())
+
+                .then((data) => {
+                    setMovies(data.results);
+                });
+        }
+    };
+
+    const handleonChange = (e) => {
+        setSearchValue(e.target.value);
+    };
+
+        {   /* If I want to not use a login pop up then just have a loading page for when you're loading the website again.
+
+
+        const {isLoading} = useAuth0();
+
+        if (isLoading) return <div>Loading... </div>
+
+*/
+        }
 
     return(
 
+<Router>
+
+    <Route path="/" exact={true} render={
+        ()=>{
+            return(
+                null
+            )
+        }
+    }/>
+
+    <div className="home">
+    <MyMovieList/>
+    </div>
+
+
+
+    <Route  path="/ProfilePage" exact strict render={
+        ()=>{
+            return(
+                <ProfilePage/>
+            )
+        }
+    }/>
+
         <div>
             <div className="Banner">
+
                 <div className="headline"><h1>Search For Movies</h1>    </div>
 
 
+<form onSubmit={handleonSubmit}>
+
+    <input
+    className="search"
+    type="search"
+    placeholder="Type to Search"
+    value={searchValue}
+    onChange={handleonChange}
+
+    />
+
+</form>
 
 
 
-            <form>
-                <input type="text" placeholder="Search" className="movieSearch"/>
 
-            </form>
 
             </div>
-            <div className="Login"> <Login/> <div className="Profile"> <ProfilePage/> </div> </div>
-
+            <div className="Login"> <Login/> </div>
+            <Logout/>
+            {/*<div className="Profile"> <ProfilePage/> </div>*/}
+             <ProfilePageButton/>
 
 
 
@@ -58,6 +145,9 @@ function App() {
 
         </div>
         </div>
+
+</Router>
+
     );
 
 

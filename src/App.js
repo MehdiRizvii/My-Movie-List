@@ -14,6 +14,10 @@ import Route from 'react-router-dom/Route';
 import MyMovieList from "./Components/MyMovieList";
 import "./Components/Search";
 import Search from "./Components/Search";
+import {GlobalProvider} from "./Context/GlobalState";
+import './Components/MovieControls';
+
+
 
 
 const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page1";
@@ -23,8 +27,7 @@ const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a
 
 function App() {
 
-
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies, score] = useState([]);
     const [searchValue, setSearchValue] = useState('');
 
 
@@ -60,6 +63,7 @@ function App() {
                 .then((data) => {
                     setMovies(data.results);
                 });
+
         }
     };
 
@@ -78,21 +82,66 @@ function App() {
         }
 
     return(
-
+<GlobalProvider>
 <Router>
+
+    <div className="home">
+        <MyMovieList/>
+    </div>
 
     <Route path="/" exact={true} render={
         ()=>{
             return(
-                null
+
+                <div>
+                    <div className="Banner">
+
+                        <div className="headline"><h1>Search For Movies</h1>    </div>
+
+
+                        <form onSubmit={handleonSubmit}>
+
+                            <input
+                                className="search"
+                                type="search"
+                                placeholder="Type to Search"
+                                value={searchValue}
+                                onChange={handleonChange}
+
+                            />
+
+                        </form>
+
+
+
+
+                    </div>
+                    <div className="Login"> <Login/> </div>
+                    <Logout
+                    />
+                    {/*<div className="Profile"> <ProfilePage/> </div>*/}
+                    <ProfilePageButton/>
+
+
+
+                    <  div className="container">
+                        {movies.length > 0 && movies.map((movie)=>(
+                            <Movie
+                                key={movie.id}
+                                name={movie.original_title}
+                                poster={movie.poster_path}
+                                release_date={movie.release_date ? movie.release_date.substring(0,4) : "-"}
+
+                            />
+
+                        ))}
+
+                    </div>
+
+                </div>
             )
         }
     }/>
-
-    <div className="home">
-    <MyMovieList/>
-    </div>
-
 
 
     <Route  path="/ProfilePage" exact strict render={
@@ -103,51 +152,9 @@ function App() {
         }
     }/>
 
-        <div>
-            <div className="Banner">
-
-                <div className="headline"><h1>Search For Movies</h1>    </div>
-
-
-<form onSubmit={handleonSubmit}>
-
-    <input
-    className="search"
-    type="search"
-    placeholder="Type to Search"
-    value={searchValue}
-    onChange={handleonChange}
-
-    />
-
-</form>
-
-
-
-
-
-            </div>
-            <div className="Login"> <Login/> </div>
-            <Logout/>
-            {/*<div className="Profile"> <ProfilePage/> </div>*/}
-             <ProfilePageButton/>
-
-
-
-            <  div className="container">
-            {movies.length > 0 && movies.map((movie)=>(
-                <Movie
-                    key={movie.id}
-                    name={movie.original_title}
-                    poster={movie.poster_path}
-                />
-                ))}
-
-        </div>
-        </div>
 
 </Router>
-
+</GlobalProvider>
     );
 
 

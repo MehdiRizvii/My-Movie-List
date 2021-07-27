@@ -5,14 +5,14 @@ import {useAuth0} from '@auth0/auth0-react';
 
 const Login = () => {
 
-    const {loginWithRedirect} = useAuth0();
+    const {loginWithPopup, isAuthenticated} = useAuth0();
 
     return(
-<button onClick={()=> loginWithRedirect()}> Login</button>
-
+        !isAuthenticated && (
+<button onClick={()=> loginWithPopup()}> Login</button>
+        )
     )
-}
-console.log(Login);
+};
 
 
 
